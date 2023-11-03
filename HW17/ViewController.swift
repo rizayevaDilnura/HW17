@@ -1,4 +1,5 @@
 import UIKit
+import SnapKit
 
 class ViewController: UIViewController {
 
@@ -28,7 +29,7 @@ class ViewController: UIViewController {
         button.backgroundColor = .green
         button.titleLabel?.text = "Generate"
         button.setTitleColor(.black, for: .normal)
-        button.addTarget(self, action: #selector(), for: .touchUpInside)
+        button.addTarget(self, action: #selector(generateButtonPressed), for: .touchUpInside)
         return button
 
     }()
@@ -40,25 +41,56 @@ class ViewController: UIViewController {
         return activityIndicatorView
     }()
 
-    //MARK: progres bar
+    //MARK: view
 
-
+    var isBlack: Bool = false {
+        didSet {
+            if isBlack {
+                self.view.backgroundColor = .black
+            } else {
+                self.view.backgroundColor = .white
+            }
+        }
+    }
 
     @IBAction func onBut(_ sender: Any) {
         isBlack.toggle()
     }
-    
+
 //MARK: Lyfe cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.bruteForce(passwordToUnlock: "1!gr")
+        setUpViews()
+        setupConstraints()
+    }
+//MARK: Set up Views
+    private func setUpViews() {
+        [label, generateButton, textField].forEach {
+            view.addSubview($0)
+        }
     }
 
+    //MARK: setup consstaints
+    private func setupConstraints() {
+        label.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(250)
+            make.width.equalTo(200)
+            make.height.equalTo(60)
+        }
 
+        textField.snp.makeConstraints { make in
+            make.top.equalTo(label.bottomAnchor).offset(40)
+            make.width.equalTo(200)
+            make.height.equalTo(60)
+        }
+        generateButton.snp.makeConstraints { make in
+            make.top.equalTo(textField.bottomAnchor).offset(40)
+            make.width.equalTo(200)
+            make.height.equalTo(60)
+        }
+    }
 
 //MARK: Actions
-
-
     func bruteForce(passwordToUnlock: String) {
         let ALLOWED_CHARACTERS:   [String] = String().printable.map { String($0) }
 
