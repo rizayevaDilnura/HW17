@@ -79,12 +79,12 @@ class ViewController: UIViewController {
         }
 
         textField.snp.makeConstraints { make in
-            make.top.equalTo(label.bottomAnchor).offset(40)
+            make.top.equalTo(label.snp.bottom).offset(40)
             make.width.equalTo(200)
             make.height.equalTo(60)
         }
         generateButton.snp.makeConstraints { make in
-            make.top.equalTo(textField.bottomAnchor).offset(40)
+            make.top.equalTo(textField.snp.bottom).offset(40)
             make.width.equalTo(200)
             make.height.equalTo(60)
         }
