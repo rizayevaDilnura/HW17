@@ -5,35 +5,58 @@ class ViewController: UIViewController {
     //MARK:  Label
     private lazy var label: UILabel = {
         let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 20)
+        label.textColor = .black
+        label.textAlignment = .center
         return label
     }()
+
     //MARK: textfield
     private lazy var textField: UITextField = {
-let textField = UITextField()
+        let textField = UITextField()
+        textField.isSecureTextEntry = true
+        textField.placeholder = "Number"
+        textField.layer.cornerRadius = 15
+        textField.backgroundColor = .white
+        textField.textColor = .black
         return textField
     }()
 
     //MARK: Generate Button
     private lazy var generateButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .red
-
+        button.backgroundColor = .green
+        button.titleLabel?.text = "Generate"
+        button.setTitleColor(.black, for: .normal)
+        button.addTarget(self, action: #selector(), for: .touchUpInside)
         return button
 
     }()
 
+    private lazy var activityIndicatorView: UIActivityIndicatorView = {
+        let activityIndicatorView = UIActivityIndicatorView()
+        activityIndicatorView.isHidden = false
+
+        return activityIndicatorView
+    }()
+
     //MARK: progres bar
+
+
+
+    @IBAction func onBut(_ sender: Any) {
+        isBlack.toggle()
+    }
     
-
-
-
-
+//MARK: Lyfe cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.bruteForce(passwordToUnlock: "1!gr")
     }
 
 
+
+//MARK: Actions
 
 
     func bruteForce(passwordToUnlock: String) {
@@ -43,10 +66,23 @@ let textField = UITextField()
 
         while password != passwordToUnlock {
             password = generateBruteForce(password, fromArray: ALLOWED_CHARACTERS)
-            print(password)
-        }
 
-        print(password)
+            DispatchQueue.main.sync { [weak self] in
+                self?.label.text = password
+            }
+        }
+        DispatchQueue.main.sync {
+            self.textField.isSecureTextEntry = false
+            self.activityIndicatorView.stopAnimating()
+            self.activityIndicatorView.isHidden = true
+        }
+    }
+    @objc func generateButtonPressed() {
+        activityIndicatorView.startAnimating()
+        guard let inputText = textField.text else { return }
+        DispatchQueue.global().async { [weak self] in
+            self?.bruteForce(passwordToUnlock: inputText)
+        }
     }
 }
 
