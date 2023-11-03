@@ -2,11 +2,40 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    //MARK:  Label
+    private lazy var label: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    //MARK: textfield
+    private lazy var textField: UITextField = {
+let textField = UITextField()
+        return textField
+    }()
+
+    //MARK: Generate Button
+    private lazy var generateButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .red
+
+        return button
+
+    }()
+
+    //MARK: progres bar
+    
+
+
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.bruteForce(passwordToUnlock: "1!gr")
-
     }
+
+
+
+
     func bruteForce(passwordToUnlock: String) {
         let ALLOWED_CHARACTERS:   [String] = String().printable.map { String($0) }
 
